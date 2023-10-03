@@ -7,34 +7,36 @@ const db = require("../../data/db-config");
 
 const checkAccountPayload = async (req, res, next) => {
   try {
-    if (!req.body.budget.trim() || !req.body.name.trim()){ 
-      next({ status: 400, message: "name and budget are required" });}
-
-    if (!req.body.name.trim().length < 3 || !req.body.name.trim().length > 100 ) {
-      next({status : 422, message : "name of account must be between 3 and 100"});}
-    
-    if (Number(req.body.budget) === NaN) {
-      next({status : 422, message : "budget of account must be a number"})}
-
-    if (req.body.budget < 0 || req.body.budget > 1000000) {
-      next({status : 422, message  :"budget of account is too larget or too small"})};
-    
-    next(); 
+      const {budget, name} = req.body;
+      if (!budget || !name) {
+        next({status : 400, message : "name and budget are required"}) 
+      } else if (name.trim().length < 3 || name.trim().length > 100) {
+        next({status : 400, message : "name of account must be between 3 and 100"})
+      } else if (Number(budget) === NaN) {
+        next({status : 400, message : "budget of account must be a number"})
+      } else if (budget < 0 || budget > 1000000) {
+        next({status : 400, message : "budget of account is too large or too small"})
+      } else {
+        next(); 
+      }
   } catch (err) { next(err) }
 }
 
 const checkAccountNameUnique = async (req, res, next) => {
   try {
     const validateUnqiueness = await db("accounts").where({name : req.body.name.trim()});
-    if (validateUnqiueness.length > 0) next({status : 400, message : "that name is taken"})
-    next();
+    if (validateUnqiueness.length > 0) {
+      next({status : 400, message : "that name is taken"})
+    } else {
+     next();
+   }
   } catch(err) {next(err)};
 }
 
 const checkAccountId = async (req, res, next) => {
   try {
     const result = await db("accounts").where({ id: req.params.id });
-    if (result.length === 0) next({ status: 404, message: `ID: ${req.params.id} not found` });
+    if (result.length === 0) next({ status: 404, message: `account not found` });
     else {
       req.account = result;
       next();
