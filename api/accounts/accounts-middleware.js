@@ -7,9 +7,9 @@ const db = require("../../data/db-config");
 
 const checkAccountPayload = async (req, res, next) => {
   try {
-      const {budget, name} = req.body;
-      console.log(budget,name)
-      if (!budget || !name) {
+      const valsDet = Object.values(req.body);
+      const {name,budget} = req.body;
+      if (valsDet.length !== 2) {
         next({status : 400, message : "name and budget are required"}) 
       } else if (name.trim().length < 3 || name.trim().length > 100) {
         next({status : 400, message : "name of account must be between 3 and 100"})
@@ -25,7 +25,9 @@ const checkAccountPayload = async (req, res, next) => {
 
 const checkAccountNameUnique = async (req, res, next) => {
   try {
-    const validateUnqiueness = await db("accounts").where({name : req.body.name.trim()});
+    const {name} = req.body;
+    const newName = name.trim();
+    const validateUnqiueness = await db("accounts").where({name :newName});
     if (validateUnqiueness.length > 0) {
       next({status : 400, message : "that name is taken"})
     } else {
@@ -37,9 +39,11 @@ const checkAccountNameUnique = async (req, res, next) => {
 const checkAccountId = async (req, res, next) => {
   try {
     const result = await db("accounts").where({ id: req.params.id });
-    if (result.length === 0) next({ status: 404, message: `account not found` });
+    if (result.length === 0){ 
+      next({ status: 404, message: `account not found` });
+    }
     else {
-      req.account = result;
+      req.account = result[0];
       next();
     }
   } catch (err) { next(err) };

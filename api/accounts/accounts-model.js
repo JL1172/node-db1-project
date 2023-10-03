@@ -7,20 +7,23 @@ const getAll = async() => {
 }
 
 const getById = async(id) => {
-  const resById = await db("accounts").where({id : id});
+  const resById = await db("accounts").where({id : id}).first();
   return resById; 
 }
 
 
 const create = async(account) => {
-  const created = await db("accounts").insert(account);
-  const returnCreated = await db("accounts").where(created);
-  return returnCreated;
+  const {name} = account;
+  const newName = name.trim();
+  const copied = {name : newName, budget : Number(account.budget)}
+  const created = await db("accounts").insert(copied);
+  // const returnCreated = await db("accounts").where(created);
+  return copied;
 }
 
 const updateById = async(id, account) => {
   const updated = await db("accounts").update(account).where({id : id});
-  const returnUpdated = await db("accounts").where({id : id});
+  const returnUpdated = await db("accounts").where({id : id}).first();
   return returnUpdated;
 }
 
