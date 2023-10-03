@@ -16,19 +16,19 @@ const create = async(account) => {
   const {name} = account;
   const newName = name.trim();
   const copied = {name : newName, budget : Number(account.budget)}
-  const created = await db("accounts").insert(copied);
+  const created = await db("accounts").insert(copied);// eslint-disable-line
   return copied;
 }
 
 const updateById = async(id, account) => {
-  const updated = await db("accounts").update(account).where({id : id});
+  const updated = await db("accounts").update(account).where({id : id}); // eslint-disable-line
   const returnUpdated = await db("accounts").where({id : id}).first();
   return returnUpdated;
 }
 
 const deleteById = async(id) => {
   const deleted = await db("accounts").del().where({id : id});
-  const returnDeleted = await db("accounts");
+  const returnDeleted = await db("accounts");// eslint-disable-line
   return deleted;
 }
 

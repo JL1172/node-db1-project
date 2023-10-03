@@ -1,4 +1,4 @@
-const yup = require("yup");
+const yup = require("yup");// eslint-disable-line
 const db = require("../../data/db-config");
 
 // const schema = yup.object().shape({
@@ -33,7 +33,7 @@ const checkAccountNameUnique = async (req, res, next) => {
     } else {
      next();
    }
-  } catch(err) {next(err)};
+  } catch(err) {next(err)}
 }
 
 const checkAccountId = async (req, res, next) => {
@@ -46,7 +46,7 @@ const checkAccountId = async (req, res, next) => {
       req.account = result[0];
       next();
     }
-  } catch (err) { next(err) };
+  } catch (err) { next(err) }
 }
 
 module.exports = {

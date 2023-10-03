@@ -6,7 +6,7 @@ router.get('/', async(req, res, next) => {
   try { 
     const result = await AccountData.getAll();
     res.status(200).json(result); 
-  } catch (err) {next(err)};
+  } catch (err) {next(err)}
 })
 
 router.get('/:id', checkAccountId, (req, res) => {
