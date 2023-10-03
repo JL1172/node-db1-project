@@ -17,7 +17,6 @@ const create = async(account) => {
   const newName = name.trim();
   const copied = {name : newName, budget : Number(account.budget)}
   const created = await db("accounts").insert(copied);
-  // const returnCreated = await db("accounts").where(created);
   return copied;
 }
 
