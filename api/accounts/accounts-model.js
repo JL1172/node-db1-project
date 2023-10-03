@@ -7,20 +7,27 @@ const getAll = async() => {
 }
 
 const getById = async(id) => {
-  // DO YOUR MAGIC
+  const resById = await db("accounts").where({id : id}).first();
+  return resById; 
 }
 
 
 const create = async(account) => {
-  // DO YOUR MAGIC
+  const [created] = await db("accounts").insert(account);
+  const returnCreated = await db("accounts").where(returnCreated).first();
+  return returnCreated;
 }
 
 const updateById = async(id, account) => {
-  // DO YOUR MAGIC
+  const updated = await db("accounts").update(account).where({id : id});
+  const returnUpdated = await db("accounts").where({id : id});
+  return returnUpdated;
 }
 
 const deleteById = async(id) => {
-  // DO YOUR MAGIC
+  const deleted = await db("accounts").del().where({id : id});
+  const returnDeleted = await db("accounts");
+  return returnDeleted;
 }
 
 module.exports = {
