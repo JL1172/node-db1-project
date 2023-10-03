@@ -8,11 +8,12 @@ const db = require("../../data/db-config");
 const checkAccountPayload = async (req, res, next) => {
   try {
       const {budget, name} = req.body;
+      console.log(budget,name)
       if (!budget || !name) {
         next({status : 400, message : "name and budget are required"}) 
       } else if (name.trim().length < 3 || name.trim().length > 100) {
         next({status : 400, message : "name of account must be between 3 and 100"})
-      } else if (Number(budget) === NaN) {
+      } else if (!Number(budget)) {
         next({status : 400, message : "budget of account must be a number"})
       } else if (budget < 0 || budget > 1000000) {
         next({status : 400, message : "budget of account is too large or too small"})

@@ -14,14 +14,14 @@ const getById = async(id) => {
 
 const create = async(account) => {
   const created = await db("accounts").insert(account);
-  const returnCreated = await db("accounts").where(created).first();
-  return created;
+  const returnCreated = await db("accounts").where(created);
+  return returnCreated;
 }
 
 const updateById = async(id, account) => {
   const updated = await db("accounts").update(account).where({id : id});
   const returnUpdated = await db("accounts").where({id : id});
-  return updated;
+  return returnUpdated;
 }
 
 const deleteById = async(id) => {
